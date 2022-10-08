@@ -71,5 +71,5 @@ export async function login(email: string, password: string) {
         64,
     ).then(toHEX);
 
-    if (hashedPassword == user.password) return user;
+    if (hashedPassword == user.password) return user; // TODO: use timingSafeEqual
 }
