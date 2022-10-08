@@ -13,4 +13,6 @@ API.add("GET", "/", (req, res) => {
 
 API.add("POST", "/registration", Users.registration);
 
+API.add("POST", "/login", Users.login);
+
 listen(API.run);
