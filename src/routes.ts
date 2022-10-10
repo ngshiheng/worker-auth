@@ -33,15 +33,15 @@ export const registrationPage: Handler = async function (req, res) {
  */
 export const hello: Handler = async function (req, res) {
     const cookie = req.headers.get("Cookie");
-    if (!cookie) return res.send(403, "cookie required");
+    if (!cookie) return res.send(403, "Cookie required");
 
     const { token } = parse(cookie);
-    if (!token) return res.send(403, "token required");
+    if (!token) return res.send(403, "Token required");
 
     const isValid = await verify(token, SALT);
-    if (!isValid) return res.send(401, "unauthorized");
+    if (!isValid) return res.send(401, "Unauthorized");
 
-    res.send(200, "hello, 你好");
+    res.send(200, "Hello, 你好!");
 };
 
 /**
@@ -54,15 +54,15 @@ export const register: Handler = async function (req, res) {
     const password = input && (input.password || "");
 
     if (!input || !email || !password)
-        return res.send(422, "email & password required");
+        return res.send(422, "Email & password required");
 
     const cookie = await Model.create(email, password);
     if (cookie) {
         res.headers.set("Set-Cookie", cookie);
         res.headers.set("HX-Redirect", "/");
-        res.send(201, "user registered successfully");
+        res.send(302, "User registered successfully");
     } else {
-        res.send(409, "user already exist");
+        res.send(409, "User already exist");
     }
 };
 
@@ -76,15 +76,15 @@ export const login: Handler = async function (req, res) {
     const password = input && (input.password || "");
 
     if (!input || !email || !password)
-        return res.send(422, "email & password required");
+        return res.send(422, "Email & password required");
 
     const cookie = await Model.login(email, password);
 
     if (cookie) {
         res.headers.set("Set-Cookie", cookie);
-        res.send(200, "user login successfully");
+        res.send(200, "Successfully login");
     } else {
-        res.send(404, "user not found");
+        res.send(404, "User not found");
     }
 };
 
@@ -93,5 +93,5 @@ export const login: Handler = async function (req, res) {
  */
 export const logout: Handler = async function (req, res) {
     res.headers.set("Set-Cookie", stringify("token", ""));
-    res.send(200, "user logout successfully");
+    res.send(200, "Successfully logout");
 };

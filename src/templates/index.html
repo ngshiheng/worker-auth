@@ -2,52 +2,76 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+        <script
+            src="https://unpkg.com/htmx.org@1.8.0"
+            integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc"
+            crossorigin="anonymous"
+        ></script>
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
         />
     </head>
     <body>
+        <script>
+            document.body.addEventListener(
+                "htmx:responseError",
+                function (evt) {
+                    const targetError =
+                        evt.target.attributes.getNamedItem("hx-target-error");
+
+                    if (targetError) {
+                        document.getElementById(
+                            targetError.value,
+                        ).innerHTML = `${evt.detail.xhr.status} ${evt.detail.xhr.responseText}`;
+                    }
+                },
+            );
+        </script>
         <main>
             <div>
                 <h2>Login</h2>
-                <form hx-post="/login" hx-target="#login">
+                <form
+                    hx-post="/login"
+                    hx-target="this"
+                    hx-target-error="login-div"
+                >
                     <div>
-                        <label
-                            >email
-                            <input name="email" type="email" />
-                        </label>
+                        <label>Email</label>
+                        <input name="email" type="email" required />
                     </div>
                     <div>
-                        <label
-                            >password
-                            <input name="password" type="password" />
-                        </label>
+                        <label>Password</label>
+                        <input name="password" type="password" required />
                     </div>
                     <div>
-                        <button type="submit">login</button>
+                        <button type="submit">Login</button>
                     </div>
                 </form>
+                <div id="login-div"></div>
             </div>
-            <div id="login"></div>
 
             <hr />
             <div>
                 <h2>Make an authenticated request</h2>
-                <button hx-get="/hello" hx-target="#hello">/hello</button>
+                <button
+                    hx-get="/hello"
+                    hx-target="#hello"
+                    hx-target-error="hello"
+                >
+                    Hello
+                </button>
                 <div id="hello"></div>
             </div>
-
             <hr />
             <div>
                 <h2>Clear cookies</h2>
-                <button hx-post="/logout" hx-target="#logout">/logout</button>
+                <button hx-post="/logout" hx-target="#logout">Logout</button>
                 <div id="logout"></div>
             </div>
         </main>
         <hr />
-        <footer class="container">
+        <footer>
             Don't have an account? <a href="/register">Register here.</a>
         </footer>
     </body>

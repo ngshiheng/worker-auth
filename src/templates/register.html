@@ -2,44 +2,56 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+        <script
+            src="https://unpkg.com/htmx.org@1.8.0"
+            integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc"
+            crossorigin="anonymous"
+        ></script>
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
         />
     </head>
     <body>
+        <script>
+            document.body.addEventListener(
+                "htmx:responseError",
+                function (evt) {
+                    const targetError =
+                        evt.target.attributes.getNamedItem("hx-target-error");
+
+                    if (targetError) {
+                        document.getElementById(
+                            targetError.value,
+                        ).innerHTML = `${evt.detail.xhr.status} ${evt.detail.xhr.responseText}`;
+                    }
+                },
+            );
+        </script>
         <main>
-            <h2>Register</h2>
             <div>
+                <h2>Register</h2>
                 <form
                     hx-post="/register"
-                    hx-target="#register"
-                    hx-swap="outerHTML"
-                    class="error"
+                    hx-target="#register-div"
+                    hx-target-error="register-div"
                 >
                     <div>
-                        <label
-                            >email
-                            <input name="email" type="email" />
-                        </label>
+                        <label>Email</label>
+                        <input name="email" type="email" required />
                     </div>
                     <div>
-                        <label
-                            >password
-                            <input name="password" type="password" />
-                        </label>
+                        <label>Password</label>
+                        <input name="password" type="password" required />
                     </div>
                     <div>
-                        <button type="submit">register</button>
+                        <button type="submit">Register</button>
                     </div>
                 </form>
+                <div id="register-div"></div>
             </div>
-            <div id="register"></div>
         </main>
         <hr />
-        <footer class="container">
-            Already have an account? <a href="/">Log in here.</a>
-        </footer>
+        <footer>Already have an account? <a href="/">Log in here.</a></footer>
     </body>
 </html>
