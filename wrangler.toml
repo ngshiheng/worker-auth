@@ -1,4 +1,4 @@
-name = "worker-htmx"
+name = "worker-auth"
 main = "src/index.ts"
 compatibility_date = "2022-10-07"
 kv_namespaces = [

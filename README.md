@@ -1,4 +1,4 @@
-# worker-htmx
+# worker-auth
 
 ## Setup
 
@@ -7,7 +7,8 @@ wrangler kv:namespace create "USERS"
 wrangler secret put SALT
 ```
 
-## Refer
+## Reference
 
 -   https://htmx.org/
 -   https://github.com/bezkoder/node-js-express-login-example
+-   https://github.com/bigskysoftware/htmx/issues/607

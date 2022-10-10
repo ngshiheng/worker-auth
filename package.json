@@ -1,5 +1,5 @@
 {
-    "name": "worker-htmx",
+    "name": "worker-auth",
     "version": "0.0.0",
     "devDependencies": {
         "@cloudflare/workers-types": "^3.16.0",
