@@ -1,6 +1,6 @@
 import { verify } from "@tsndr/cloudflare-worker-jwt";
 import type { Handler } from "worktop";
-import { parse } from "worktop/cookie";
+import { parse, stringify } from "worktop/cookie";
 import * as Model from "./model";
 import HOME_PAGE from "./templates/index.html";
 import REGISTRATION_PAGE from "./templates/register.html";
@@ -33,9 +33,11 @@ export const registrationPage: Handler = async function (req, res) {
  */
 export const hello: Handler = async function (req, res) {
     const cookie = req.headers.get("Cookie");
-    if (!cookie) return res.send(403, "no token provided required");
+    if (!cookie) return res.send(403, "cookie required");
 
     const { token } = parse(cookie);
+    if (!token) return res.send(403, "token required");
+
     const isValid = await verify(token, SALT);
     if (!isValid) return res.send(401, "unauthorized");
 
@@ -83,4 +85,12 @@ export const login: Handler = async function (req, res) {
     } else {
         res.send(404, "user not found");
     }
+};
+
+/**
+ * POST /logout
+ */
+export const logout: Handler = async function (req, res) {
+    res.headers.set("Set-Cookie", stringify("token", ""));
+    res.send(200, "user logout successfully");
 };

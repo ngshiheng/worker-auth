@@ -10,34 +10,36 @@
     </head>
     <body>
         <main>
-            <h1>Register</h1>
-            <form
-                hx-post="/register"
-                hx-target="#register"
-                hx-swap="outerHTML"
-                class="error"
-            >
-                <div>
-                    <label
-                        >Email
-                        <input name="email" type="email" />
-                    </label>
-                </div>
-                <div>
-                    <label
-                        >Password
-                        <input name="password" type="password" />
-                    </label>
-                </div>
-                <div>
-                    <button type="submit">Register</button>
-                </div>
-            </form>
-            <hr />
+            <h2>Register</h2>
+            <div>
+                <form
+                    hx-post="/register"
+                    hx-target="#register"
+                    hx-swap="outerHTML"
+                    class="error"
+                >
+                    <div>
+                        <label
+                            >email
+                            <input name="email" type="email" />
+                        </label>
+                    </div>
+                    <div>
+                        <label
+                            >password
+                            <input name="password" type="password" />
+                        </label>
+                    </div>
+                    <div>
+                        <button type="submit">register</button>
+                    </div>
+                </form>
+            </div>
             <div id="register"></div>
         </main>
+        <hr />
         <footer class="container">
-            <a href="/">login</a>
+            Already have an account? <a href="/">Log in here.</a>
         </footer>
     </body>
 </html>

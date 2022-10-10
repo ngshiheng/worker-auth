@@ -10,33 +10,45 @@
     </head>
     <body>
         <main>
-            <h1>Login</h1>
-            <form hx-post="/login" hx-target="#login">
-                <div>
-                    <label
-                        >Email
-                        <input name="email" type="email" />
-                    </label>
-                </div>
-                <div>
-                    <label
-                        >Password
-                        <input name="password" type="password" />
-                    </label>
-                </div>
-                <div>
-                    <button type="submit">Login</button>
-                </div>
-            </form>
+            <div>
+                <h2>Login</h2>
+                <form hx-post="/login" hx-target="#login">
+                    <div>
+                        <label
+                            >email
+                            <input name="email" type="email" />
+                        </label>
+                    </div>
+                    <div>
+                        <label
+                            >password
+                            <input name="password" type="password" />
+                        </label>
+                    </div>
+                    <div>
+                        <button type="submit">login</button>
+                    </div>
+                </form>
+            </div>
             <div id="login"></div>
+
             <hr />
             <div>
-                <button hx-get="/hello" hx-target="#hello">Hello</button>
+                <h2>Make an authenticated request</h2>
+                <button hx-get="/hello" hx-target="#hello">/hello</button>
+                <div id="hello"></div>
             </div>
-            <div id="hello"></div>
+
+            <hr />
+            <div>
+                <h2>Clear cookies</h2>
+                <button hx-post="/logout" hx-target="#logout">/logout</button>
+                <div id="logout"></div>
+            </div>
         </main>
+        <hr />
         <footer class="container">
-            <a href="/register">register</a>
+            Don't have an account? <a href="/register">Register here.</a>
         </footer>
     </body>
 </html>
