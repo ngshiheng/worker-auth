@@ -59,6 +59,7 @@ export const register: Handler = async function (req, res) {
     const cookie = await Model.create(email, password);
     if (cookie) {
         res.headers.set("Set-Cookie", cookie);
+        res.headers.set("HX-Redirect", "/");
         res.send(201, "user registered successfully");
     } else {
         res.send(409, "user already exist");
