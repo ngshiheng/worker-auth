@@ -12,6 +12,7 @@
         "deploy": "wrangler publish"
     },
     "dependencies": {
+        "@tsndr/cloudflare-worker-jwt": "^2.1.0",
         "worktop": "^0.7.3"
     }
 }

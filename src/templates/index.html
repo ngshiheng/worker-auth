@@ -2,87 +2,41 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-        <!--Import Google Icon Font-->
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
-        <!-- Compiled and minified CSS -->
+        <script src="https://unpkg.com/htmx.org@1.7.0"></script>
         <link
             rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+            href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
         />
     </head>
     <body>
         <main>
-            <div id="login" class="container">
-                <div class="row">
-                    <div class="row col s4">
-                        <h3>Login</h3>
-                    </div>
-                    <form
-                        class="col s12"
-                        hx-post="/login"
-                        hx-swap="innerHTML"
-                        hx-target="#login"
-                        method="post"
-                    >
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    class="validate"
-                                    required
-                                />
-                                <label for="email">Email</label>
-                                <span
-                                    class="helper-text"
-                                    data-error="Please enter a valid email."
-                                    data-success=""
-                                ></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    class="validate"
-                                    required
-                                />
-                                <label for="password">Password</label>
-                            </div>
-                        </div>
-                        <div class="row col s4">
-                            <button
-                                class="btn waves-effect indigo darken-2 waves-light"
-                                type="submit"
-                                name="action"
-                            >
-                                Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </form>
-                    <div class="row col s4">
-                        <p>
-                            Don't have an account?
-                            <a href="/register" class="">Register here.</a>
-                        </p>
-                    </div>
+            <h1>Login</h1>
+            <form hx-post="/login" hx-target="#login">
+                <div>
+                    <label
+                        >Email
+                        <input name="email" type="email" />
+                    </label>
                 </div>
+                <div>
+                    <label
+                        >Password
+                        <input name="password" type="password" />
+                    </label>
+                </div>
+                <div>
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+            <div id="login"></div>
+            <hr />
+            <div>
+                <button hx-get="/hello" hx-target="#hello">Hello</button>
             </div>
+            <div id="hello"></div>
         </main>
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <!-- Load from unpkg -->
-        <script src="https://unpkg.com/htmx.org@1.7.0"></script>
         <footer class="container">
-            <a href="/">home</a> | <a href="/private">private</a>
+            <a href="/register">register</a>
         </footer>
     </body>
 </html>

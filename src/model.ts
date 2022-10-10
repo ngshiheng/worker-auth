@@ -1,3 +1,5 @@
+import { sign } from "@tsndr/cloudflare-worker-jwt";
+import { stringify } from "worktop/cookie";
 import { PBKDF2 } from "worktop/crypto";
 import type { KV } from "worktop/kv";
 import * as DB from "worktop/kv";
@@ -6,10 +8,7 @@ import { toHEX } from "worktop/utils";
 declare const USERS: KV.Namespace;
 declare const SALT: string;
 
-export interface Auth {
-    email: string;
-    password: string;
-}
+const ONE_DAY = 86400;
 
 export interface User {
     email: string;
@@ -35,6 +34,10 @@ export function save(email: string, user: Partial<User>) {
 
 /**
  * Create a new `User` record
+ * - Check if the user already exists
+ * - Hash user password with PBKDF2
+ * - Sign a JWT token
+ * - Return a HttpOnly cookie
  */
 export async function create(email: string, password: string) {
     const user = await find(email);
@@ -53,11 +56,23 @@ export async function create(email: string, password: string) {
         password: hashedPassword,
         created_at: Date.now(),
     };
-    if (await save(email, values)) return values;
+    const isCreated = await save(email, values);
+    if (!isCreated) return;
+
+    const token = await sign({ email }, SALT);
+    const cookie = stringify("token", token, {
+        httponly: true,
+        maxage: ONE_DAY,
+    });
+    return cookie;
 }
 
 /**
- * Login as `User`
+ * Login as user
+ * - Check if the user already exists
+ * - Compare hashed user password input with saved hashed password
+ * - Sign a JWT token
+ * - Return a HttpOnly cookie
  */
 export async function login(email: string, password: string) {
     const user = await find(email);
@@ -71,5 +86,13 @@ export async function login(email: string, password: string) {
         64,
     ).then(toHEX);
 
-    if (hashedPassword == user.password) return user; // TODO: use timingSafeEqual
+    const isValid = hashedPassword === user.password; // TODO: use timingSafeEqual
+    if (!isValid) return;
+
+    const token = await sign({ email }, SALT);
+    const cookie = stringify("token", token, {
+        httponly: true,
+        maxage: ONE_DAY,
+    });
+    return cookie;
 }

@@ -1,22 +1,66 @@
+import { verify } from "@tsndr/cloudflare-worker-jwt";
 import type { Handler } from "worktop";
-import type { Auth } from "./model";
+import { parse } from "worktop/cookie";
 import * as Model from "./model";
+import HOME_PAGE from "./templates/index.html";
+import REGISTRATION_PAGE from "./templates/register.html";
+
+declare const SALT: string;
+
+interface Auth {
+    email: string;
+    password: string;
+}
 
 /**
- * POST /registration
+ * GET /
  */
-export const registration: Handler = async function (req, res) {
+export const home: Handler = async function (req, res) {
+    res.setHeader("Content-Type", "text/html");
+    res.end(HOME_PAGE);
+};
+
+/**
+ * GET /register
+ */
+export const registrationPage: Handler = async function (req, res) {
+    res.setHeader("Content-Type", "text/html");
+    res.end(REGISTRATION_PAGE);
+};
+
+/**
+ * GET /hello
+ */
+export const hello: Handler = async function (req, res) {
+    const cookie = req.headers.get("Cookie");
+    if (!cookie) return res.send(403, "no token provided required");
+
+    const { token } = parse(cookie);
+    const isValid = await verify(token, SALT);
+    if (!isValid) return res.send(401, "unauthorized");
+
+    res.send(200, "hello, 你好");
+};
+
+/**
+ * POST /register
+ */
+export const register: Handler = async function (req, res) {
     const input = await req.body<Auth>();
+
     const email = input && (input.email || "").trim();
     const password = input && (input.password || "");
 
-    if (!input || !email) return res.send(422, { error: "email required" });
-    if (!input || !password)
-        return res.send(422, { error: "password required" });
+    if (!input || !email || !password)
+        return res.send(422, "email & password required");
 
-    const result = await Model.create(email, password);
-    if (result) res.send(201, result);
-    else res.send(409, { error: "registration error" });
+    const cookie = await Model.create(email, password);
+    if (cookie) {
+        res.headers.set("Set-Cookie", cookie);
+        res.send(201, "user registered successfully");
+    } else {
+        res.send(409, "user already exist");
+    }
 };
 
 /**
@@ -24,14 +68,19 @@ export const registration: Handler = async function (req, res) {
  */
 export const login: Handler = async function (req, res) {
     const input = await req.body<Auth>();
+
     const email = input && (input.email || "").trim();
     const password = input && (input.password || "");
 
-    if (!input || !email) return res.send(422, { error: "email required" });
-    if (!input || !password)
-        return res.send(422, { error: "password required" });
+    if (!input || !email || !password)
+        return res.send(422, "email & password required");
 
-    const result = await Model.login(email, password);
-    if (result) res.send(200, result);
-    else res.send(403, { error: "user does not exist" });
+    const cookie = await Model.login(email, password);
+
+    if (cookie) {
+        res.headers.set("Set-Cookie", cookie);
+        res.send(200, "user login successfully");
+    } else {
+        res.send(404, "user not found");
+    }
 };
