@@ -29,6 +29,9 @@ sequenceDiagram
     Note over Client,Server: Token is set in cookie
     Client->>+Server: GET /hello
     Server-->>-Client: Hello, 你好!
+    Client->>+Server: POST /logout
+    Server-->>-Client: 200 Successfully logout
+    Note over Client,Server: Token is set as empty string in cookie
 ```
 
 ## Requirements
