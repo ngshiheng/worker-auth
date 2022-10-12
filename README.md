@@ -39,9 +39,20 @@ sequenceDiagram
 ## Setup
 
 ```sh
-npm ci
-wrangler kv:namespace create "USERS"
-wrangler secret put SALT
+❯ npm ci
+# ...omitted for brevity...
+
+❯ wrangler login
+# ...omitted for brevity...
+
+❯ wrangler kv:namespace create "USERS"
+# ...omitted for brevity...
+Add the following to your configuration file in your kv_namespaces array:
+{ binding = "USERS", id = "bd445a5887f6437cb4ec9adb11a19106" }
+
+❯ wrangler secret put SALT
+ # ...omitted for brevity...
+✨ Success! Uploaded secret SALT
 ```
 
 ## Usage

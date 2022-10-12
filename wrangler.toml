@@ -2,5 +2,5 @@ name = "worker-auth"
 main = "src/index.ts"
 compatibility_date = "2022-10-07"
 kv_namespaces = [
-  { binding = "USERS", id = "48e8ae5634a641f78048320c65b1db0a", preview_id = "48e8ae5634a641f78048320c65b1db0a" },
+  {binding = "USERS", id = "bd445a5887f6437cb4ec9adb11a19106", preview_id = "bd445a5887f6437cb4ec9adb11a19106"},
 ]
