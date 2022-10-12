@@ -10,7 +10,13 @@
 
 ## Motivation
 
-To demonstrate how cookie based authentication work.
+This project uses token (JWT) based authentication (contrary to session-based authentication). Generally, there are different 3 common ways one can store authentication tokens:
+
+1. Cookie
+2. Session Storage
+3. Local Storage
+
+This repository aims to demonstrate the difference between the 3.
 
 ## User Workflow
 
@@ -28,7 +34,7 @@ sequenceDiagram
     Server-->>-Client: 200 Successfully login
     Note over Client,Server: Token is set in cookie
     Client->>+Server: GET /hello
-    Server-->>-Client: Hello, 你好!
+    Server-->>-Client: Hello <email>, 你好!
     Client->>+Server: POST /logout
     Server-->>-Client: 200 Successfully logout
     Note over Client,Server: Token is set as empty string in cookie
@@ -70,3 +76,4 @@ wrangler dev
 -   https://github.com/bezkoder/node-js-express-login-example
 -   https://github.com/bigskysoftware/htmx/issues/607
 -   https://blog.ropnop.com/storing-tokens-in-browser/
+-   https://stackoverflow.com/questions/37582444/jwt-vs-cookies-for-token-based-authentication/37635977#37635977

@@ -12,8 +12,8 @@ import {
 const API = new Router();
 
 API.add("GET", "/", home);
-API.add("GET", "/register", registrationPage);
 API.add("GET", "/hello", hello);
+API.add("GET", "/register", registrationPage);
 API.add("POST", "/register", register);
 API.add("POST", "/login", login);
 API.add("POST", "/logout", logout);
