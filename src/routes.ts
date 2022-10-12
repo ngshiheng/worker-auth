@@ -1,10 +1,11 @@
-import { verify } from "@tsndr/cloudflare-worker-jwt";
+import { decode, verify } from "@tsndr/cloudflare-worker-jwt";
 import type { Handler } from "worktop";
 import { parse, stringify } from "worktop/cookie";
 import * as Model from "./model";
 import HOME_PAGE from "./templates/index.html";
 import REGISTRATION_PAGE from "./templates/register.html";
 
+declare const ONE_HOUR: number;
 declare const SALT: string;
 
 interface Auth {
@@ -14,6 +15,7 @@ interface Auth {
 
 /**
  * GET /
+ * - Render home page HTML
  */
 export const home: Handler = async function (req, res) {
     res.setHeader("Content-Type", "text/html");
@@ -22,6 +24,7 @@ export const home: Handler = async function (req, res) {
 
 /**
  * GET /register
+ * - Render user registration page html
  */
 export const registrationPage: Handler = async function (req, res) {
     res.setHeader("Content-Type", "text/html");
@@ -30,6 +33,7 @@ export const registrationPage: Handler = async function (req, res) {
 
 /**
  * GET /hello
+ * - Private endpoint
  */
 export const hello: Handler = async function (req, res) {
     const cookie = req.headers.get("Cookie");
@@ -41,11 +45,13 @@ export const hello: Handler = async function (req, res) {
     const isValid = await verify(token, SALT);
     if (!isValid) return res.send(401, "Unauthorized");
 
-    res.send(200, "Hello, 你好!");
+    const { email } = decode(token).payload;
+    res.send(200, `Hello ${email}, 你好!`);
 };
 
 /**
  * POST /register
+ * - Create a new `User` record
  */
 export const register: Handler = async function (req, res) {
     const input = await req.body<Auth>();
@@ -56,18 +62,18 @@ export const register: Handler = async function (req, res) {
     if (!input || !email || !password)
         return res.send(422, "Email & password required");
 
-    const cookie = await Model.create(email, password);
-    if (cookie) {
-        res.headers.set("Set-Cookie", cookie);
-        res.headers.set("HX-Redirect", "/");
-        res.send(302, "User registered successfully");
-    } else {
-        res.send(409, "User already exist");
+    const isCreated = await Model.create(email, password);
+    if (!isCreated) {
+        return res.send(409, "User already exist");
     }
+    res.headers.set("HX-Redirect", "/");
+    return res.send(302, "User registered successfully");
 };
 
 /**
  * POST /login
+ * - Issue a new JWT to user
+ * - Store the JWT in cookie which expires in ONE_HOUR (NOTE: different expiry from JWT)
  */
 export const login: Handler = async function (req, res) {
     const input = await req.body<Auth>();
@@ -78,14 +84,17 @@ export const login: Handler = async function (req, res) {
     if (!input || !email || !password)
         return res.send(422, "Email & password required");
 
-    const cookie = await Model.login(email, password);
-
-    if (cookie) {
-        res.headers.set("Set-Cookie", cookie);
-        res.send(200, "Successfully login");
-    } else {
-        res.send(404, "User not found");
+    const token = await Model.login(email, password);
+    if (!token) {
+        return res.send(404, "User not found");
     }
+
+    const cookie = stringify("token", token, {
+        httponly: true,
+        maxage: ONE_HOUR,
+    });
+    res.headers.set("Set-Cookie", cookie);
+    res.send(200, "Successfully login");
 };
 
 /**
