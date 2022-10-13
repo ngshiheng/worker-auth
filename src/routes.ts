@@ -92,6 +92,7 @@ export const login: Handler = async function (req, res) {
     const cookie = stringify("token", token, {
         httponly: true,
         maxage: ONE_HOUR,
+        samesite: "Strict",
     });
     res.headers.set("Set-Cookie", cookie);
     res.send(200, "Successfully login");
