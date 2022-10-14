@@ -110,7 +110,7 @@ export const login: Handler = async function (req, res) {
     });
     res.headers.set("Set-Cookie", cookie);
     res.headers.set("X-CSRF-Token", csrfToken);
-    res.send(200, "Successfully login");
+    res.send(200, "Logged in");
 };
 
 /**

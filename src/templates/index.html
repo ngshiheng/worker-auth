@@ -35,6 +35,7 @@
                     const csrfToken =
                         evt.detail.xhr.getResponseHeader("X-CSRF-Token");
                     localStorage.setItem("csrf-token", csrfToken);
+                    document.getElementById("login-form").reset();
                 }
             });
         </script>
@@ -43,8 +44,9 @@
                 <h2>Login</h2>
                 <h4>Sign in as an existing user.</h4>
                 <form
+                    id="login-form"
                     hx-post="/login"
-                    hx-target="this"
+                    hx-target="#login-div"
                     hx-target-error="login-div"
                 >
                     <div>
@@ -65,7 +67,7 @@
             <hr />
             <div>
                 <h2>Hello</h2>
-                <h4>Make an authenticated request to POST /hello endpoint.</h4>
+                <h4>Make an authenticated POST request to /hello endpoint.</h4>
                 <button
                     hx-get="/hello"
                     hx-target="#hello"
