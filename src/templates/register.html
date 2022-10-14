@@ -11,6 +11,11 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
         />
+        <style>
+            pre {
+                color: #ffbe85;
+            }
+        </style>
     </head>
     <body>
         <script>
@@ -34,22 +39,27 @@
                 <h4>Sign up as a new user.</h4>
                 <form
                     hx-post="/register"
-                    hx-target="#register-div"
-                    hx-target-error="register-div"
+                    hx-target="#register-pre"
+                    hx-target-error="register-pre"
                 >
                     <div>
                         <label>Email</label>
-                        <input name="email" type="email" required />
+                        <input
+                            required
+                            name="email"
+                            type="email"
+                            placeholder="email@address.com"
+                        />
                     </div>
                     <div>
                         <label>Password</label>
-                        <input name="password" type="password" required />
+                        <input required name="password" type="password" />
                     </div>
                     <div>
                         <button type="submit">Register</button>
                     </div>
                 </form>
-                <div id="register-div"></div>
+                <pre id="register-pre"></pre>
             </div>
         </main>
         <hr />

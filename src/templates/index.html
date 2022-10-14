@@ -11,6 +11,11 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
         />
+        <style>
+            pre {
+                color: #ffbe85;
+            }
+        </style>
     </head>
     <body>
         <script>
@@ -46,22 +51,27 @@
                 <form
                     id="login-form"
                     hx-post="/login"
-                    hx-target="#login-div"
-                    hx-target-error="login-div"
+                    hx-target="#login-pre"
+                    hx-target-error="login-pre"
                 >
                     <div>
                         <label>Email</label>
-                        <input name="email" type="email" required />
+                        <input
+                            required
+                            name="email"
+                            type="email"
+                            placeholder="email@address.com"
+                        />
                     </div>
                     <div>
                         <label>Password</label>
-                        <input name="password" type="password" required />
+                        <input required name="password" type="password" />
                     </div>
                     <div>
                         <button type="submit">Login</button>
                     </div>
                 </form>
-                <div id="login-div"></div>
+                <pre id="login-pre"></pre>
             </div>
 
             <hr />
@@ -76,8 +86,9 @@
                 >
                     Hello
                 </button>
-                <div id="hello"></div>
+                <pre id="hello"></pre>
             </div>
+
             <hr />
             <div>
                 <h2>Logout</h2>
@@ -91,7 +102,7 @@
                 >
                     Clear Local Storage
                 </button>
-                <div id="logout"></div>
+                <pre id="logout"></pre>
             </div>
         </main>
         <hr />
