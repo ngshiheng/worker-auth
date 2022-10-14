@@ -1,4 +1,3 @@
-import { sign } from "@tsndr/cloudflare-worker-jwt";
 import { PBKDF2 } from "worktop/crypto";
 import type { KV } from "worktop/kv";
 import * as DB from "worktop/kv";
@@ -16,22 +15,22 @@ export interface User {
 }
 
 /**
- * Find a `User` record by email
+ * Find a user record by email
  */
 export function find(email: string) {
     return DB.read<User>(USERS, email, "json");
 }
 
 /**
- * Force-write a `User` record
- * User will be auto-deleted after ONE_DAY
+ * Force-write a user record
+ * - User will be auto-deleted after ONE_DAY
  */
 export function save(email: string, user: Partial<User>) {
     return DB.write(USERS, email, user, { expirationTtl: ONE_DAY });
 }
 
 /**
- * Create a new `User` record
+ * Create a new user record
  * - Check if the user already exists
  * - Hash user password with PBKDF2
  */
@@ -58,8 +57,7 @@ export async function create(email: string, password: string) {
 /**
  * Login as user
  * - Check if the user already exists
- * - Compare input hashed user password against the saved hashed password
- * - Sign a JWT which expires in ONE_HOUR (NOTE: different expiry from cookie)
+ * - Compare hashed passwords
  */
 export async function login(email: string, password: string) {
     const user = await find(email);
@@ -73,9 +71,5 @@ export async function login(email: string, password: string) {
         64,
     ).then(toHEX);
 
-    const isValid = hashedPassword === user.password;
-    if (!isValid) return;
-
-    const exp = Math.floor(Date.now() / 1000) + ONE_HOUR;
-    return await sign({ email, exp }, SALT);
+    return hashedPassword === user.password;
 }

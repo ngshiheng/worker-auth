@@ -27,6 +27,16 @@
                     }
                 },
             );
+
+            // Get X-CSRF-Token from POST /login request and store it in Local Storage
+            document.body.addEventListener("htmx:afterRequest", function (evt) {
+                const url = new URL(evt.detail.xhr.responseURL);
+                if (url.pathname === "/login") {
+                    const csrfToken =
+                        evt.detail.xhr.getResponseHeader("X-CSRF-Token");
+                    localStorage.setItem("csrf-token", csrfToken);
+                }
+            });
         </script>
         <main>
             <div>
@@ -58,6 +68,7 @@
                     hx-get="/hello"
                     hx-target="#hello"
                     hx-target-error="hello"
+                    hx-headers="javascript:{'X-CSRF-Token': localStorage.getItem('csrf-token')}"
                 >
                     Hello
                 </button>
