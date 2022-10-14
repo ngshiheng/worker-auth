@@ -118,5 +118,5 @@ export const login: Handler = async function (req, res) {
  */
 export const logout: Handler = async function (req, res) {
     res.headers.set("Set-Cookie", stringify("jwt", ""));
-    res.send(200, "Successfully logout");
+    res.send(200, "Cleared cookie");
 };

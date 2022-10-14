@@ -41,6 +41,7 @@
         <main>
             <div>
                 <h2>Login</h2>
+                <h4>Sign in as an existing user.</h4>
                 <form
                     hx-post="/login"
                     hx-target="this"
@@ -63,7 +64,8 @@
 
             <hr />
             <div>
-                <h2>Make an authenticated request</h2>
+                <h2>Hello</h2>
+                <h4>Make an authenticated request to POST /hello endpoint.</h4>
                 <button
                     hx-get="/hello"
                     hx-target="#hello"
@@ -76,8 +78,17 @@
             </div>
             <hr />
             <div>
-                <h2>Clear cookies</h2>
-                <button hx-post="/logout" hx-target="#logout">Logout</button>
+                <h2>Logout</h2>
+                <h4>Sign out.</h4>
+                <button hx-post="/logout" hx-target="#logout">
+                    Clear Cookies
+                </button>
+                <button
+                    onclick="localStorage.removeItem('csrf-token'); document.getElementById('logout').innerHTML = 'Cleared local storage'"
+                    hx-target="#logout"
+                >
+                    Clear Local Storage
+                </button>
                 <div id="logout"></div>
             </div>
         </main>
