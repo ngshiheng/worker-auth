@@ -3,6 +3,8 @@
 - [worker-auth](#worker-auth)
   - [Motivation](#motivation)
   - [User Workflow](#user-workflow)
+    - [The "Classic" Technique](#the-classic-technique)
+    - [The "Double Submit Cookie" Technique](#the-double-submit-cookie-technique)
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Usage](#usage)
@@ -10,17 +12,23 @@
 
 ## Motivation
 
-This project uses token (JWT) based authentication (contrary to session-based authentication). Generally, there are different 3 common ways one can store authentication tokens:
+Stop comparing JWT & Cookie.
+
+This PoC uses token (JWT) based authentication (contrary to session-based authentication). Generally, there are different 3 common ways to store authentication tokens such as JWT:
 
 1. Cookie
-2. Session Storage
-3. Local Storage
+2. Local Storage
+3. Session Storage
 
-This repository aims to demonstrate the difference between the 3.
+This PoC aims to demonstrate how we can perform a 100% stateless authentication using token-based authentication with JWT with CSRF token to mitigate CSRF + XSS attacks.
 
 ## User Workflow
 
 The diagram below shows how we implement user registration, login, and authorization.
+
+### The "Classic" Technique
+
+This is vulnerable to CSRF attacks.
 
 ```mermaid
 sequenceDiagram
@@ -28,16 +36,35 @@ sequenceDiagram
     actor Client
     participant Server
 
-    Client->>+Server: POST /register
-    Server-->>-Client: 302 User registered successfully
     Client->>+Server: POST /login
-    Server-->>-Client: 200 Successfully login
-    Note over Client,Server: Token is set in cookie
+    Note right of Server: sign <jwt>
+    Server-->>-Client: 200 Logged in
+    Note over Server,Client: Set-Cookie: <jwt>
     Client->>+Server: GET /hello
-    Server-->>-Client: Hello <email>, 你好!
-    Client->>+Server: POST /logout
-    Server-->>-Client: 200 Successfully logout
-    Note over Client,Server: Token is set as empty string in cookie
+    Note right of Server: verify <jwt>
+    Note over Client,Server: Cookie: <jwt>
+    Server-->>-Client: 200 OK
+```
+
+### The "Double Submit Cookie" Technique
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Local Storage
+    actor Client
+    participant Server
+
+    Client->>+Server: POST /login
+    Note right of Server: sign <jwt> with generated <csrfToken> as claim
+    Server-->>-Client: 200 Logged In
+    Note over Server,Client: Set-Cookie: <jwt> & X-CSRF-Token: <csrfToken>
+    Client-->>Local Storage: setItem("csrf-token", <csrfToken>);
+    Local Storage->>Client: getItem("csrf-token");
+    Client->>+Server: GET /hello
+    Note over Client,Server: Cookie: <jwt> & X-CSRF-Token: <csrfToken>
+    Note right of Server: verify <jwt> & compare <jwt> <csrfToken> & X-CSRF-Token <csrfToken>
+    Server-->>-Client: 200 OK
 ```
 
 ## Requirements
@@ -72,8 +99,8 @@ wrangler dev
 
 ## Reference
 
--   https://htmx.org/
 -   https://github.com/bezkoder/node-js-express-login-example
 -   https://github.com/bigskysoftware/htmx/issues/607
 -   https://blog.ropnop.com/storing-tokens-in-browser/
 -   https://stackoverflow.com/questions/37582444/jwt-vs-cookies-for-token-based-authentication/37635977#37635977
+-   https://youtu.be/67mezK3NzpU
