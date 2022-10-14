@@ -45,7 +45,8 @@ export const hello: Handler = async function (req, res) {
     const isValid = await verify(jwt, SALT);
     if (!isValid) return res.send(401, "Unauthorized");
 
-    res.send(200, `Hello ${email}, 你好!`);
+    const now = new Date().toUTCString();
+    res.send(200, `Hello ${email}, 你好! (${now})`);
 };
 
 /**
