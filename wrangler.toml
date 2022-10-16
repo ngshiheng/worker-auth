@@ -1,10 +1,11 @@
-name = "worker-auth"
-main = "src/index.ts"
 account_id = "19a745c88f8264f29c608584b7e417ab"
 compatibility_date = "2022-10-07"
 kv_namespaces = [
   {binding = "USERS", id = "bd445a5887f6437cb4ec9adb11a19106", preview_id = "bd445a5887f6437cb4ec9adb11a19106"},
 ]
+main = "src/index.ts"
+name = "worker-auth"
+
 [vars]
-ONE_HOUR = 3600
 ONE_DAY = 86400
+ONE_HOUR = 3600
