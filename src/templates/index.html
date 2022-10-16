@@ -39,7 +39,9 @@
                 if (url.pathname === "/login") {
                     const csrfToken =
                         evt.detail.xhr.getResponseHeader("X-CSRF-Token");
-                    localStorage.setItem("csrf-token", csrfToken);
+                    if (csrfToken) {
+                        localStorage.setItem("csrf-token", csrfToken);
+                    }
                     document.getElementById("login-form").reset();
                 }
             });
