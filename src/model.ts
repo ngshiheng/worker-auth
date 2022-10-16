@@ -4,7 +4,6 @@ import * as DB from "worktop/kv";
 import { toHEX } from "worktop/utils";
 
 declare const ONE_DAY: number;
-declare const ONE_HOUR: number;
 declare const SALT: string;
 declare const USERS: KV.Namespace;
 

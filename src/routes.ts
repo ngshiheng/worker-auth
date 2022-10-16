@@ -1,8 +1,9 @@
+import * as Model from "@src/model";
 import { decode, sign, verify } from "@tsndr/cloudflare-worker-jwt";
 import type { Handler } from "worktop";
 import { parse, stringify } from "worktop/cookie";
 import { uuid } from "worktop/utils";
-import * as Model from "./model";
+
 import HOME_PAGE from "./templates/index.html";
 import REGISTRATION_PAGE from "./templates/register.html";
 

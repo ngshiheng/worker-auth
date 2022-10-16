@@ -1,5 +1,3 @@
-import { Router } from "worktop";
-import { listen } from "worktop/cache";
 import {
     hello,
     home,
@@ -7,7 +5,9 @@ import {
     logout,
     register,
     registrationPage,
-} from "./routes";
+} from "@src/routes";
+import { Router } from "worktop";
+import { listen } from "worktop/cache";
 
 const API = new Router();
 
