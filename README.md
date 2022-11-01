@@ -6,6 +6,7 @@
   - [User Workflow](#user-workflow)
     - [The "Classic" Approach](#the-classic-approach)
     - [The Modified "Cookie-to-header token" Approach](#the-modified-cookie-to-header-token-approach)
+  - [Tech Stack](#tech-stack)
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Usage](#usage)
@@ -24,13 +25,8 @@ When using token-based authentication, the most asked question is "where to stor
 
 Generally, there are 2 common ways to store authentication tokens in the browser:
 
-1. Cookie
-2. Local Storage
-
-Now, you may have heard of the following:
-
--   We should NOT keep authentication tokens in Local Storage as that is vulnerable to [XSS attacks](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting).
--   We should NOT keep authentication tokens in Cookie as that is vulnerable to to [CSRF/XSRF attacks](https://developer.mozilla.org/en-US/docs/Glossary/CSRF).
+1. Cookie - vulnerable to [XSS attacks](https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting)
+2. Local Storage - vulnerable to to [CSRF/XSRF attacks](https://developer.mozilla.org/en-US/docs/Glossary/CSRF)
 
 ## Motivation
 
@@ -41,9 +37,9 @@ Some other CSRF protection approaches are:
 -   [Synchronizer Token Pattern](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Synchronizer_token_pattern)
 -   [Double Submit Cookie](https://en.wikipedia.org/wiki/Cross-site_request_forgery#Double_Submit_Cookie)
 
-## User Workflow
+[Read more...](https://jerrynsh.com/all-to-know-about-auth-and-cookies/)
 
-The diagram below shows how we implement user registration, login, and authorization.
+## User Workflow
 
 ### The "Classic" Approach
 
@@ -89,6 +85,11 @@ sequenceDiagram
     Note right of Server: verify <jwt> & compare <jwt> <csrfToken> & X-CSRF-Token <csrfToken>
     Server-->>-Client: 200 OK
 ```
+
+## Tech Stack
+
+-   [Cloudflare Worker](https://workers.cloudflare.com/)
+-   [htmx](https://htmx.org/)
 
 ## Requirements
 
