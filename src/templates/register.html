@@ -37,7 +37,10 @@
         <main>
             <div>
                 <h2>Register</h2>
-                <h4>Sign up as a new user.</h4>
+                <h4>
+                    Sign up as a new user. Already have an account?
+                    <a href="/">Log in here.</a>
+                </h4>
                 <form
                     hx-post="/register"
                     hx-target="#register-pre"
@@ -64,6 +67,10 @@
             </div>
         </main>
         <hr />
-        <footer>Already have an account? <a href="/">Log in here.</a></footer>
+        <footer>
+            <a href="/">login</a> |
+            <a href="https://github.com/ngshiheng/worker-auth">source code</a> |
+            <a href="https://jerrynsh.com/about/">about author</a>
+        </footer>
     </body>
 </html>

@@ -50,7 +50,11 @@
         <main>
             <div>
                 <h2>Login</h2>
-                <h4>Sign in as an existing user.</h4>
+                <h4>
+                    Sign in as an existing user. Don't have an account?
+                    <a href="/register">Register here.</a>
+                </h4>
+
                 <form
                     id="login-form"
                     hx-post="/login"
@@ -80,7 +84,7 @@
             <hr />
             <div>
                 <h2>Hello</h2>
-                <h4>Make an authenticated POST request to /hello endpoint.</h4>
+                <h4>Make an authenticated GET request to /hello endpoint.</h4>
                 <button
                     hx-get="/hello"
                     hx-target="#hello"
@@ -110,7 +114,9 @@
         </main>
         <hr />
         <footer>
-            Don't have an account? <a href="/register">Register here.</a>
+            <a href="/register">register</a> |
+            <a href="https://github.com/ngshiheng/worker-auth">source code</a> |
+            <a href="https://jerrynsh.com/about/">about author</a>
         </footer>
     </body>
 </html>
