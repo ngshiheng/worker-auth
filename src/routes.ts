@@ -73,6 +73,10 @@ export const register: Handler = async function (req, res) {
     if (!input || !email || !password)
         return res.send(422, "Email & password required");
 
+    if (password.length < 12) {
+        return res.send(422, "Password should be at least 12 characters long");
+    }
+
     const isCreated = await Model.create(email, password);
     if (!isCreated) {
         return res.send(409, "User already exist");
