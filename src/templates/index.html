@@ -34,15 +34,9 @@
                 },
             );
 
-            // Get X-CSRF-Token from POST /login request and store it in Local Storage
             document.body.addEventListener("htmx:afterRequest", function (evt) {
                 const url = new URL(evt.detail.xhr.responseURL);
                 if (url.pathname === "/login") {
-                    const csrfToken =
-                        evt.detail.xhr.getResponseHeader("X-CSRF-Token");
-                    if (csrfToken) {
-                        localStorage.setItem("csrf-token", csrfToken);
-                    }
                     document.getElementById("login-form").reset();
                 }
             });
