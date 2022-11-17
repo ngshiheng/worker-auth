@@ -84,9 +84,9 @@
             <hr />
             <div>
                 <h2>Hello</h2>
-                <h4>Make an authenticated GET request to /hello endpoint.</h4>
+                <h4>Make an authenticated POST request to /hello endpoint.</h4>
                 <button
-                    hx-get="/hello"
+                    hx-post="/hello"
                     hx-target="#hello"
                     hx-target-error="hello"
                     hx-headers="javascript:{'X-CSRF-Token': localStorage.getItem('csrf-token')}"

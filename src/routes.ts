@@ -25,7 +25,7 @@ export const home: Handler = async function (req, res) {
 };
 
 /**
- * GET /hello
+ * POST /hello
  * - A private endpoint
  * - Verify JWT
  * - Verify X-CSRF-Token

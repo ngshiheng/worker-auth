@@ -56,7 +56,7 @@ sequenceDiagram
     Server-->>-Client: 200 Logged in
     Note over Server,Client: Set-Cookie: <jwt>
     Note left of Client: stores <jwt> in cookie
-    Client->>+Server: GET /hello
+    Client->>+Server: POST /hello
     Note over Client,Server: Cookie: <jwt>
     Note right of Server: verify <jwt>
     Server-->>-Client: 200 OK
@@ -80,7 +80,7 @@ sequenceDiagram
     Note left of Client: stores <jwt> in cookie
     Client-->>Local Storage: setItem("csrf-token", <csrfToken>);
     Local Storage->>Client: getItem("csrf-token");
-    Client->>+Server: GET /hello
+    Client->>+Server: POST /hello
     Note over Client,Server: Cookie: <jwt> & X-CSRF-Token: <csrfToken>
     Note right of Server: verify <jwt> & compare <jwt> <csrfToken> & X-CSRF-Token <csrfToken>
     Server-->>-Client: 200 OK
