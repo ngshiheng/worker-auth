@@ -28,7 +28,6 @@ export const home: Handler = async function (req, res) {
  * POST /hello
  * - A private endpoint
  * - Verify JWT
- * - Verify X-CSRF-Token
  */
 export const hello: Handler = async function (req, res) {
     const cookie = req.headers.get("Cookie");
@@ -37,11 +36,7 @@ export const hello: Handler = async function (req, res) {
     const { jwt } = parse(cookie);
     if (!jwt) return res.send(401, "JWT required");
 
-    const headerCSRFToken = req.headers.get("X-CSRF-Token");
-    if (!headerCSRFToken) return res.send(401, "CSRF token required");
-
-    const { email, csrfToken } = decode(jwt).payload;
-    if (csrfToken !== headerCSRFToken) return res.send(401, "Bad CSRF token");
+    const { email } = decode(jwt).payload;
 
     const isValid = await verify(jwt, SALT);
     if (!isValid) return res.send(401, "Unauthorized");
@@ -87,8 +82,7 @@ export const register: Handler = async function (req, res) {
 
 /**
  * POST /login
- * - Generate CSRF token
- * - Sign a JWT with CSRF Token claim
+ * - Sign a JWT
  * - Store the JWT in storage Cookie  using Set-Cookie header
  */
 export const login: Handler = async function (req, res) {
@@ -106,16 +100,14 @@ export const login: Handler = async function (req, res) {
     }
 
     const exp = Math.floor(Date.now() / 1000) + ONE_HOUR;
-    const csrfToken = uuid();
-    const jwt = await sign({ email, exp, csrfToken }, SALT);
+    const jwt = await sign({ email, exp }, SALT);
 
     const cookie = stringify("jwt", jwt, {
         httponly: true,
         maxage: ONE_HOUR,
-        samesite: "None", // Explicitly set samesite to None to proof that CSRF protection works
+        samesite: "None",
     });
     res.headers.set("Set-Cookie", cookie);
-    res.headers.set("X-CSRF-Token", csrfToken);
     res.send(200, "Logged in");
 };
 
