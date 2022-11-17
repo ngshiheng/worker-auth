@@ -121,6 +121,8 @@ Add the following to your configuration file in your kv_namespaces array:
 wrangler dev
 ```
 
+To test a CSRF attack, check out this [little tool](https://littletools.app/form?eyJtZXRob2QiOiJQT1NUIiwiYWN0aW9uIjoiaHR0cHM6Ly93b3JrZXItYXV0aC5qZXJyeW5zaC53b3JrZXJzLmRldi9oZWxsbyIsImZpZWxkcyI6W119) (credits: [Shrikant](https://sharats.me/)).
+
 ## Reference
 
 -   https://github.com/bezkoder/node-js-express-login-example

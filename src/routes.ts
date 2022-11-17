@@ -112,7 +112,7 @@ export const login: Handler = async function (req, res) {
     const cookie = stringify("jwt", jwt, {
         httponly: true,
         maxage: ONE_HOUR,
-        samesite: "Strict",
+        samesite: "None", // Explicitly set samesite to None to proof that CSRF protection works
     });
     res.headers.set("Set-Cookie", cookie);
     res.headers.set("X-CSRF-Token", csrfToken);
