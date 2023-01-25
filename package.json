@@ -1,6 +1,6 @@
 {
     "name": "worker-auth",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "dependencies": {
         "@tsndr/cloudflare-worker-jwt": "2.1.4",
         "worktop": "0.7.3"
