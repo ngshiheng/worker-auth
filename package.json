@@ -13,8 +13,8 @@
         "wrangler": "3.1.0"
     },
     "scripts": {
-        "start": "wrangler dev",
-        "deploy": "wrangler publish",
+        "start": "wrangler dev --remote",
+        "deploy": "wrangler deploy",
         "prettier": "prettier \"./**/*.{js,ts,yml,yaml}\" -l --ignore-path .eslintignore",
         "prettier:fix": "prettier \"./**/*.{js,ts,yml,yaml}\" --write --ignore-path .eslintignore"
     }
